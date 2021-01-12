@@ -37,7 +37,7 @@ This repository is a modified version of yantadeu/rancher-deploy-action
 `````
   
 - name: Rancher Deploy
-  uses: yantadeu/rancher-deploy-action@v0.0.2
+  uses: hoangthanh212/rancher-push-cover-namespace@master
   env:
     RANCHER_ACCESS_KEY: 'XXXXXXX'
     RANCHER_SECRET_KEY: 'XXXXXXX'
