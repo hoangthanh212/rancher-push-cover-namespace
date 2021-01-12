@@ -37,5 +37,6 @@
     RANCHER_SECRET_KEY: 'XXXXXXX'
     RANCHER_URL_API: 'https://rancher.YOUR-DOMAIN.COM/v3'
     SERVICE_NAME: 'myProject'
+    RANCHER_NAMESPACE : 'namespace'
     DOCKER_IMAGE: 'xxxxxxx:yyyyyyyy'
-    DOCKER_IMAGE_LATEST: 'xxxxxxx:latest'
+   
