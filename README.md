@@ -1,4 +1,4 @@
-This repository is a modified version of yantadeu/rancher-deploy-action
+This repository is a modified version of [yantadeu/rancher-deploy-action](https://www.github.com/yantadeu/rancher-deploy-action)
 
 # Action to deploy image in Rancher using Rancher API
 
