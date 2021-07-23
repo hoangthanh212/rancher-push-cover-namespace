@@ -21,6 +21,7 @@ class DeployRancher:
             projects = rp.json()
             for p in projects['data']:
                 w_url = '{}/projects/{}/workloads'.format(self.rancher_url_api, p['id'])
+                print('defined',w_url,self.service_name,self.rancher_namespace)
                 rw = requests.get(w_url, auth=(self.access_key, self.secret_key))
                 workload = rw.json()
                 for w in workload['data']:
