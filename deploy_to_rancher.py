@@ -16,41 +16,45 @@ class DeployRancher:
         self.rancher_workload_url_api = ''
 
     def deploy(self):
-        rp = requests.get('{}/projects'.format(self.rancher_url_api), auth=(self.access_key, self.secret_key))
-        projects = rp.json()
-        for p in projects['data']:
-            w_url = '{}/projects/{}/workloads'.format(self.rancher_url_api, p['id'])
-            rw = requests.get(w_url, auth=(self.access_key, self.secret_key))
-            workload = rw.json()
-            for w in workload['data']:
-                if  w['name'] == self.service_name and w['namespaceId'] == self.rancher_namespace:
-                    self.rancher_workload_url_api = w_url
-                    self.rancher_deployment_path = w['links']['self']
+        try:
+            rp = requests.get('{}/projects'.format(self.rancher_url_api), auth=(self.access_key, self.secret_key))
+            projects = rp.json()
+            for p in projects['data']:
+                w_url = '{}/projects/{}/workloads'.format(self.rancher_url_api, p['id'])
+                rw = requests.get(w_url, auth=(self.access_key, self.secret_key))
+                workload = rw.json()
+                for w in workload['data']:
+                    if  w['name'] == self.service_name and w['namespaceId'] == self.rancher_namespace:
+                        self.rancher_workload_url_api = w_url
+                        self.rancher_deployment_path = w['links']['self']
+                        break
+                if self.rancher_deployment_path != '':
                     break
-            if self.rancher_deployment_path != '':
-                break
 
-        rget = requests.get(self.rancher_deployment_path,
-                            auth=(self.access_key, self.secret_key))
-        response = rget.json()
-        if 'status' in response and response['status'] == 404:
-            config = {
-                "containers": [{
-                    "imagePullPolicy": "Always",
-                    "image": self.docker_image,
-                    "name": self.service_name,
-                }],
-                "namespaceId": self.rancher_namespace,
-                "name": self.service_name
-            }
+            rget = requests.get(self.rancher_deployment_path,
+                                auth=(self.access_key, self.secret_key))
+            response = rget.json()
+            if 'status' in response and response['status'] == 404:
+                config = {
+                    "containers": [{
+                        "imagePullPolicy": "Always",
+                        "image": self.docker_image,
+                        "name": self.service_name,
+                    }],
+                    "namespaceId": self.rancher_namespace,
+                    "name": self.service_name
+                }
 
-            requests.post(self.rancher_workload_url_api,
-                          json=config, auth=(self.access_key, self.secret_key))
-        else:
-            response['containers'][0]['image'] = self.docker_image
+                requests.post(self.rancher_workload_url_api,
+                              json=config, auth=(self.access_key, self.secret_key))
+            else:
+                response['containers'][0]['image'] = self.docker_image
 
-            requests.put(self.rancher_deployment_path + '?action=redeploy',
-                         json=response, auth=(self.access_key, self.secret_key))
+                requests.put(self.rancher_deployment_path + '?action=redeploy',
+                             json=response, auth=(self.access_key, self.secret_key))
+        except Exception:
+            print("An exception occurred")
+            traceback.print_exc()
         sys.exit(0)
 
 
