@@ -21,7 +21,6 @@ class DeployRancher:
             projects = rp.json()
             for p in projects['data']:
                 w_url = '{}/projects/{}/workloads'.format(self.rancher_url_api, p['id'])
-                print('defined',w_url,self.service_name,self.rancher_namespace)
                 rw = requests.get(w_url, auth=(self.access_key, self.secret_key))
                 workload = rw.json()
                 for w in workload['data']:
@@ -32,7 +31,6 @@ class DeployRancher:
                         break
                 if self.rancher_deployment_path != '':
                     break
-            print(self.rancher_deployment_path)
             rget = requests.get(self.rancher_deployment_path,
                                 auth=(self.access_key, self.secret_key))
             response = rget.json()
@@ -57,6 +55,7 @@ class DeployRancher:
         except Exception:
             print("An exception occurred")
             traceback.print_exc()
+            raise Exception('Error occurred')
         sys.exit(0)
 
 
