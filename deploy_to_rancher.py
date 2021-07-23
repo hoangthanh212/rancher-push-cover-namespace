@@ -1,7 +1,7 @@
 import os
 import sys
 import requests
-
+import traceback
 
 class DeployRancher:
     def __init__(self, rancher_access_key, rancher_secret_key, rancher_url_api,
