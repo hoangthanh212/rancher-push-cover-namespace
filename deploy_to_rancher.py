@@ -23,6 +23,7 @@ class DeployRancher:
                 w_url = '{}/projects/{}/workloads'.format(self.rancher_url_api, p['id'])
                 rw = requests.get(w_url, auth=(self.access_key, self.secret_key))
                 workload = rw.json()
+                print('workload',workload)
                 for w in workload['data']:
                     if  w['name'] == self.service_name and w['namespaceId'] == self.rancher_namespace:
                         self.rancher_workload_url_api = w_url
@@ -30,7 +31,7 @@ class DeployRancher:
                         break
                 if self.rancher_deployment_path != '':
                     break
-
+            print(self.rancher_deployment_path)
             rget = requests.get(self.rancher_deployment_path,
                                 auth=(self.access_key, self.secret_key))
             response = rget.json()
